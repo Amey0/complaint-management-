@@ -1,1 +1,376 @@
-index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janaseva Bank - Customer Grievance Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #reportOutput {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Janaseva Bank - Customer Complaint Management</h2>
+        
+        <!-- Complaint Form -->
+        <div id="complaintFormSection">
+            <form id="complaintForm">
+                <div class="form-group">
+                  <div class="form-group">
+                    <label for="serialNumber">Serial Number:</label>
+                    <input type="number" id="serialNumber" name="serialNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="complaintNumber">Complaint Number:</label>
+                    <input type="text" id="complaintNumber" name="complaintNumber" required>
+                </div>
+                <div class="form-group">
+    <label for="complaintSource">Complaint Source:</label>
+    <select id="complaintSource" name="complaintSource" required>
+        <option value="">Select Source</option>
+        <option value="by web portal">By Web Portal</option>
+        <option value="by whatsapp">By WhatsApp</option>
+        <option value="by e-mail">By E-mail</option>
+        <option value="by written letter">By Written Letter</option>
+        <option value="RBI ombudsman">By RBI Ombudsman</option>
+    </select>
+</div>
+                    <label for="complaintDate">Complaint Received Date:</label>
+                    <input type="date" id="complaintDate" name="complaintDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerName">Customer Name:</label>
+                    <input type="text" id="customerName" name="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobileNumber">Mobile Number:</label>
+                    <input type="tel" id="mobileNumber" name="mobileNumber" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                    <label for="accountNumber">Account Number:</label>
+                    <input type="text" id="accountNumber" name="accountNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="complaintDesc">Complaint Description:</label>
+                    <textarea id="complaintDesc" name="complaintDesc" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="actionTaken">Action Taken:</label>
+                    <textarea id="actionTaken" name="actionTaken" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="complaintType">Complaint Type:</label>
+                    <select id="complaintType" name="complaintType" required>
+                        <option value="">Select Type</option>
+                        <option value="digital">Digital Banking</option>
+                        <option value="service">Service Related</option>
+                        <option value="transaction">Transaction Issues</option>
+                        <option value="staff">Staff Behavior</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="resolutionDate">Resolution Date:</label>
+                    <input type="date" id="resolutionDate" name="resolutionDate">
+                </div>
+                <div class="form-group">
+                    <label for="department">Department/Branch:</label>
+                    <select id="department" name="department" required>
+                        <option value="">Select Department/Branch</option>
+                        <option value="HEAD OFFICE">HEAD OFFICE</option>
+                        <option value="HADAPSAR">HADAPSAR</option>
+                        <option value="SHANIPAR">SHANIPAR</option>
+                        <option value="MARKETYARD">MARKETYARD</option>
+                        <option value="NETAJINAGAR">NETAJINAGAR</option>
+                        <option value="RAMWADI">RAMWADI</option>
+                        <option value="SASWAD">SASWAD</option>
+                        <option value="SHIKRAPUR">SHIKRAPUR</option>
+                        <option value="DHANKAWADI">DHANKAWADI</option>
+                        <option value="BHOSRI">BHOSRI</option>
+                        <option value="WARJE">WARJE</option>
+                        <option value="CAMP">CAMP</option>
+                        <option value="MANIKBAUG">MANIKBAUG</option>
+                        <option value="SASANE NAGAR">SASANE NAGAR</option>
+                        <option value="BHUSARI COLONEY (KOTHRUD)">BHUSARI COLONEY (KOTHRUD)</option>
+                        <option value="M.I.D.C(BHOSARI)">M.I.D.C(BHOSARI)</option>
+                        <option value="BIBWEWADI">BIBWEWADI</option>
+                        <option value="DECCAN JIMKHANA-SHIVAJINAGAR">DECCAN JIMKHANA-SHIVAJINAGAR</option>
+                        <option value="AUNDH">AUNDH</option>
+                        <option value="KONDHWA BUDRUK">KONDHWA BUDRUK</option>
+                        <option value="KHARADI">KHARADI</option>
+                        <option value="PIRANGUT">PIRANGUT</option>
+                        <option value="FURSUNGI">FURSUNGI</option>
+                        <option value="KESHVNAGAR(MUNDHVA)">KESHVNAGAR(MUNDHVA)</option>
+                        <option value="CHAKAN">CHAKAN</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="">Select Status</option>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+                <button type="submit">Submit Complaint</button>
+            </form>
+        </div>
+
+        <!-- Report Filters -->
+        <div class="container">
+            <h3>Generate Report</h3>
+            <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" name="startDate">
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" name="endDate">
+            </div>
+            <div class="form-group">
+                <label for="filterType">Complaint Type:</label>
+                <select id="filterType" name="filterType">
+                    <option value="">All Types</option>
+                    <option value="digital">Digital Banking</option>
+                    <option value="service">Service Related</option>
+                    <option value="transaction">Transaction Issues</option>
+                    <option value="staff">Staff Behavior</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="filterStatus">Status:</label>
+                <select id="filterStatus" name="filterStatus">
+                    <option value="">All Statuses</option>
+                    <option value="open">Open</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+            <button onclick="generateReport()">Generate Report</button>
+            <button onclick="exportToCSV()">Export to CSV</button>
+        </div>
+
+        <!-- Report Output -->
+        <div id="reportOutput">
+            <h3>Complaint Report</h3>
+            <table id="reportTable">
+                <thead>
+    <tr>
+        <th>Serial No</th>
+        <th>Complaint No</th>
+        <th>Source</th> <!-- New column added here -->
+        <th>Date Received</th>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Account</th>
+        <th>Complaint</th>
+        <th>Type</th>
+        <th>Action Taken</th>
+        <th>Resolved Date</th>
+        <th>Department</th>
+        <th>Status</th>
+    </tr>
+</thead>
+                <tbody id="reportBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+    // Initialize complaints array
+    let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+
+    // Form submission
+    document.getElementById('complaintForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const complaint = {
+            id: Date.now(),
+            serialNumber: document.getElementById('serialNumber').value,
+            complaintNumber: document.getElementById('complaintNumber').value,
+            complaintSource: document.getElementById('complaintSource').value,
+            complaintDate: document.getElementById('complaintDate').value,
+            customerName: document.getElementById('customerName').value,
+            mobileNumber: document.getElementById('mobileNumber').value,
+            accountNumber: document.getElementById('accountNumber').value,
+            complaintDesc: document.getElementById('complaintDesc').value,
+            actionTaken: document.getElementById('actionTaken').value,
+            complaintType: document.getElementById('complaintType').value,
+            resolutionDate: document.getElementById('resolutionDate').value,
+            department: document.getElementById('department').value,
+            status: document.getElementById('status').value
+        };
+
+        complaints.push(complaint);
+        localStorage.setItem('complaints', JSON.stringify(complaints));
+        this.reset();
+        alert('Complaint submitted successfully!');
+    });
+
+    // Generate Report
+    function generateReport() {
+        const startDate = new Date(document.getElementById('startDate').value);
+        const endDate = new Date(document.getElementById('endDate').value);
+        const filterType = document.getElementById('filterType').value;
+        const filterStatus = document.getElementById('filterStatus').value;
+
+        let filteredComplaints = [...complaints];
+
+        // Apply filters
+        if (startDate && !isNaN(startDate)) {
+            filteredComplaints = filteredComplaints.filter(c => 
+                new Date(c.complaintDate) >= startDate);
+        }
+        if (endDate && !isNaN(endDate)) {
+            filteredComplaints = filteredComplaints.filter(c => 
+                new Date(c.complaintDate) <= endDate);
+        }
+        if (filterType) {
+            filteredComplaints = filteredComplaints.filter(c => 
+                c.complaintType === filterType);
+        }
+        if (filterStatus) {
+            filteredComplaints = filteredComplaints.filter(c => 
+                c.status === filterStatus);
+        }
+
+        const reportBody = document.getElementById('reportBody');
+        reportBody.innerHTML = '';
+        
+        filteredComplaints.forEach(c => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${c.serialNumber}</td>
+                <td>${c.complaintNumber}</td>
+                <td>${c.complaintSource}</td>
+                <td>${c.complaintDate}</td>
+                <td>${c.customerName}</td>
+                <td>${c.mobileNumber}</td>
+                <td>${c.accountNumber}</td>
+                <td>${c.complaintDesc}</td>
+                <td>${c.complaintType}</td>
+                <td>${c.actionTaken}</td>
+                <td>${c.resolutionDate || 'N/A'}</td>
+                <td>${c.department}</td>
+                <td>${c.status}</td>
+            `;
+            reportBody.appendChild(row);
+        });
+
+        document.getElementById('reportOutput').style.display = 'block';
+    }
+
+    // Export to CSV
+    function exportToCSV() {
+        const table = document.getElementById('reportTable');
+        let csv = [];
+        
+        // Headers
+        const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+        csv.push(headers.join(','));
+
+        // Rows
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const cells = Array.from(row.querySelectorAll('td'))
+                .map(cell => `"${cell.textContent.replace(/"/g, '""')}"`);
+            csv.push(cells.join(','));
+        });
+
+        // Download CSV
+        const csvContent = csv.join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Complaint_Report_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+
+    // Set default dates for startDate and endDate
+    window.addEventListener('DOMContentLoaded', function() {
+        const today = new Date(); // Current date: March 2, 2025
+        const startDate = new Date(today);
+        const endDate = new Date(today);
+
+        // Set start date to 15 days before today
+        startDate.setDate(today.getDate() - 15); // February 15, 2025
+        // Set end date to 15 days after today
+        endDate.setDate(today.getDate() + 15); // March 17, 2025
+
+        // Format dates to YYYY-MM-DD for input fields
+        const formatDate = (date) => date.toISOString().split('T')[0];
+        
+        // Set the default values
+        document.getElementById('startDate').value = formatDate(startDate);
+        document.getElementById('endDate').value = formatDate(endDate);
+    });
+</script>
+</body>
+  </html>
