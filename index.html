@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Janaseva Bank - Customer Grievance Management System">
+    <meta name="keywords" content="Janaseva Bank, Customer Complaint, Grievance Management">
     <title>Janaseva Bank - Customer Grievance Management</title>
     <style>
         body {
@@ -21,28 +23,34 @@
         .container {
             background: white;
             border: 1px solid #ddd;
-            padding: 25px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .clear-complaint-container {
+            padding: 10px;
         }
         h2, h3 {
             color: #2c3e50;
             border-bottom: 2px solid #ff7305;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+        }
+        .clear-complaint-container .form-group {
+            margin-bottom: 10px;
         }
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #34495e;
             font-weight: 600;
         }
         input, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #bdc3c7;
             border-radius: 4px;
             box-sizing: border-box;
@@ -53,18 +61,21 @@
             outline: none;
         }
         textarea {
-            height: 100px;
+            height: 80px;
             resize: vertical;
         }
         button {
             background-color: #ff7305;
             color: white;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.3s;
+        }
+        .clear-complaint-container button {
+            padding: 8px 16px;
         }
         button:hover {
             background-color: #e66500;
@@ -79,11 +90,11 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 12px;
+            padding: 10px;
             text-align: left;
             font-size: 14px;
         }
@@ -94,10 +105,53 @@
         .button-group {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 5px;
+        }
+        .clear-complaint-container .button-group {
+            margin-top: 5px;
         }
         .report-filters .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+        }
+        button {
+            background-color: #007bff !important;
+            margin: 2px;
+        }
+        button[type="submit"] {
+            background-color: #ff7305 !important;
+        }
+        button[onclick="clearComplaintData()"] {
+            background-color: #e91c00 !important;
+        }
+        button[onclick="generateReport()"] {
+            background-color: #ff7305 !important;
+        }
+        button[onclick="exportToCSV()"] {
+            background-color: #008708 !important;
+        }
+        button[onclick="exportToJSON()"] {
+            background-color: #ffc107 !important;
+            color: #000 !important;
+        }
+        button[onclick="document.getElementById('importFile').click()"] {
+            background-color: #6c757d !important;
+        }
+        button:hover {
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        /* Previous styles remain same */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        /* Add new style for vertical gap */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 690px;
         }
     </style>
 </head>
@@ -105,27 +159,36 @@
     <h2>Janaseva Bank - Customer Complaint Management</h2>
     
     <div class="main-container">
-        <!-- Complaint Form Section -->
         <div class="container">
             <h3>Complaint Form</h3>
             <form id="complaintForm">
                 <div class="form-group">
-                    <label for="serialNumber">Serial Number:</label>
-                    <input type="number" id="serialNumber" name="serialNumber" required>
+                    <label for="serialNo">Serial No:</label>
+                    <input type="text" id="serialNo" name="serialNo" required>
                 </div>
                 <div class="form-group">
-                    <label for="complaintNumber">Complaint Number:</label>
-                    <input type="text" id="complaintNumber" name="complaintNumber" required>
+                    <label for="complainantNumber">Complainant Number:</label>
+                    <input type="text" id="complainantNumber" name="complainantNumber" required>
                 </div>
                 <div class="form-group">
-                    <label for="complaintSource">Complaint Source:</label>
-                    <select id="complaintSource" name="complaintSource" required>
+                    <label for="complaintOrElse">Complaint or Else:</label>
+                    <select id="complaintOrElse" name="complaintOrElse" required>
+                        <option value="">Select Type</option>
+                        <option value="complaint">Complaint</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="enquiry">Enquiry</option>
+                        <option value="difficulty">Difficulty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="complaintReceived">Complaint Received:</label>
+                    <select id="complaintReceived" name="complaintReceived" required>
                         <option value="">Select Source</option>
-                        <option value="by web portal">By Web Portal</option>
-                        <option value="by whatsapp">By WhatsApp</option>
-                        <option value="by e-mail">By E-mail</option>
-                        <option value="by written letter">By Written Letter</option>
-                        <option value="RBI ombudsman">By RBI Ombudsman</option>
+                        <option value="web portal">By Web Portal</option>
+                        <option value="whatsapp">By WhatsApp</option>
+                        <option value="email">By Email</option>
+                        <option value="written letter">By Written Letter</option>
+                        <option value="rbi ombudsman">By RBI Ombudsman</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -209,193 +272,262 @@
                     </select>
                 </div>
                 <div class="button-group">
-                    <button type="submit">Submit Complaint</button>
+                    <button type="submit" aria-label="Submit Complaint">Submit Complaint</button>
                 </div>
             </form>
         </div>
 
-        <!-- Report Section -->
-        <div class="container report-filters">
-            <h3>Generate Report</h3>
-            <div class="form-group">
-                <label for="startDate">Start Date:</label>
-                <input type="date" id="startDate" name="startDate">
+        <div class="right-column">
+            <!-- Clear Complaint Data Container -->
+            <div class="container clear-complaint-container">
+                <h3>Clear Previous Complaint Data</h3>
+                <div class="form-group">
+                    <label for="password">Enter Password to Clear Data:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter password">
+                </div>
+                <div class="button-group">
+                    <button type="button" onclick="clearComplaintData()" aria-label="Clear Complaint Data">Clear Complaint Data</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="endDate">End Date:</label>
-                <input type="date" id="endDate" name="endDate">
-            </div>
-            <div class="form-group">
-                <label for="filterType">Complaint Type:</label>
-                <select id="filterType" name="filterType">
-                    <option value="">All Types</option>
-                    <option value="digital">Digital Banking</option>
-                    <option value="service">Service Related</option>
-                    <option value="transaction">Transaction Issues</option>
-                    <option value="staff">Staff Behavior</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="filterStatus">Status:</label>
-                <select id="filterStatus" name="filterStatus">
-                    <option value="">All Statuses</option>
-                    <option value="open">Open</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="resolved">Resolved</option>
-                    <option value="closed">Closed</option>
-                </select>
-            </div>
-            <div class="button-group">
-                <button onclick="generateReport()">Generate Report</button>
-                <button onclick="exportToCSV()">Export to CSV</button>
+
+            <!-- Generate Report Container -->
+            <div class="container report-container" style="margin-top: 30px;">
+                <h3>Generate Report</h3>
+                <div class="form-group">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="startDate">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" name="endDate">
+                </div>
+                <div class="form-group">
+                    <label for="filterType">Complaint Type:</label>
+                    <select id="filterType" name="filterType">
+                        <option value="">All Types</option>
+                        <option value="digital">Digital Banking</option>
+                        <option value="service">Service Related</option>
+                        <option value="transaction">Transaction Issues</option>
+                        <option value="staff">Staff Behavior</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filterStatus">Status:</label>
+                    <select id="filterStatus" name="filterStatus">
+                        <option value="">All Statuses</option>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+                <div class="button-group">
+    <button type="button" onclick="generateReport()" aria-label="Generate Report">Generate Report</button>
+    <button type="button" onclick="exportToJSON()" aria-label="Export to JSON">Export to JSON</button>
+    <span id="lastExportTime" style="font-size: 12px; color: #666; margin-left: 10px; align-self: center;">
+        Last Export: Never
+    </span>
+    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importFromJSON(event)">
+    <button type="button" onclick="document.getElementById('importFile').click()" aria-label="Import from JSON">Import from JSON</button>
+</div>
             </div>
         </div>
     </div>
 
-    <!-- Report Output -->
     <div id="reportOutput" class="container">
-        <h3>Complaint Report</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0;">Complaint Report</h3>
+            <button type="button" onclick="exportToCSV()" aria-label="Export to CSV">Export to CSV</button>
+        </div>
         <table id="reportTable">
             <thead>
-                <tr>
-                    <th>Serial No</th>
-                    <th>Complaint No</th>
-                    <th>Source</th>
-                    <th>Date Received</th>
-                    <th>Name</th>
-                    <th>Mobile</th>
-                    <th>Account</th>
-                    <th>Complaint</th>
-                    <th>Type</th>
-                    <th>Action Taken</th>
-                    <th>Resolved Date</th>
-                    <th>Department</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+    <tr>
+        <th>S.No</th>
+        <th>Complaint No</th>
+        <th>Category</th> <!-- Added this -->
+        <th>source</th>
+        <th>Date Received</th>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Account</th>
+        <th>Complaint</th>
+        <th>Type</th>
+        <th>Action Taken</th>
+        <th>Resolved Date</th>
+        <th>Department</th>
+        <th>Status</th>
+    </tr>
+</thead>
             <tbody id="reportBody"></tbody>
         </table>
     </div>
 
-    <script>
-    // JavaScript logic remains unchanged from janaseva_06.html
+    <script
+   type="text/javascript">
+    let lastExportTimestamp = localStorage.getItem('lastExportTimestamp') || null;
     let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
-
-    document.getElementById('complaintForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const complaint = {
-            id: Date.now(),
-            serialNumber: document.getElementById('serialNumber').value,
-            complaintNumber: document.getElementById('complaintNumber').value,
-            complaintSource: document.getElementById('complaintSource').value,
-            complaintDate: document.getElementById('complaintDate').value,
-            customerName: document.getElementById('customerName').value,
-            mobileNumber: document.getElementById('mobileNumber').value,
-            accountNumber: document.getElementById('accountNumber').value,
-            complaintDesc: document.getElementById('complaintDesc').value,
-            actionTaken: document.getElementById('actionTaken').value,
-            complaintType: document.getElementById('complaintType').value,
-            resolutionDate: document.getElementById('resolutionDate').value,
-            department: document.getElementById('department').value,
-            status: document.getElementById('status').value
-        };
-
-        complaints.push(complaint);
-        localStorage.setItem('complaints', JSON.stringify(complaints));
-        this.reset();
-        alert('Complaint submitted successfully!');
-    });
-
-    function generateReport() {
-        const startDate = new Date(document.getElementById('startDate').value);
-        const endDate = new Date(document.getElementById('endDate').value);
-        const filterType = document.getElementById('filterType').value;
-        const filterStatus = document.getElementById('filterStatus').value;
-
-        let filteredComplaints = [...complaints];
-
-        if (startDate && !isNaN(startDate)) {
-            filteredComplaints = filteredComplaints.filter(c => 
-                new Date(c.complaintDate) >= startDate);
-        }
-        if (endDate && !isNaN(endDate)) {
-            filteredComplaints = filteredComplaints.filter(c => 
-                new Date(c.complaintDate) <= endDate);
-        }
-        if (filterType) {
-            filteredComplaints = filteredComplaints.filter(c => 
-                c.complaintType === filterType);
-        }
-        if (filterStatus) {
-            filteredComplaints = filteredComplaints.filter(c => 
-                c.status === filterStatus);
-        }
-
-        const reportBody = document.getElementById('reportBody');
-        reportBody.innerHTML = '';
-        
-        filteredComplaints.forEach(c => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${c.serialNumber}</td>
-                <td>${c.complaintNumber}</td>
-                <td>${c.complaintSource}</td>
-                <td>${c.complaintDate}</td>
-                <td>${c.customerName}</td>
-                <td>${c.mobileNumber}</td>
-                <td>${c.accountNumber}</td>
-                <td>${c.complaintDesc}</td>
-                <td>${c.complaintType}</td>
-                <td>${c.actionTaken}</td>
-                <td>${c.resolutionDate || 'N/A'}</td>
-                <td>${c.department}</td>
-                <td>${c.status}</td>
-            `;
-            reportBody.appendChild(row);
-        });
-
-        document.getElementById('reportOutput').style.display = 'block';
+           // Initialize last export time display
+    if (lastExportTimestamp) {
+        document.getElementById('lastExportTime').textContent = `Last Export: ${lastExportTimestamp}`;
     }
 
-    function exportToCSV() {
-        const table = document.getElementById('reportTable');
-        let csv = [];
-        
-        const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
-        csv.push(headers.join(','));
+        document.getElementById('complaintForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const complaint = {
+                id: document.getElementById('complainantNumber').value,
+                serialNo: document.getElementById('serialNo').value,
+                complainantNumber: document.getElementById('complainantNumber').value,
+                complaintOrElse: document.getElementById('complaintOrElse').value,
+                complaintReceived: document.getElementById('complaintReceived').value,
+                complaintDate: document.getElementById('complaintDate').value,
+                customerName: document.getElementById('customerName').value,
+                mobileNumber: document.getElementById('mobileNumber').value,
+                accountNumber: document.getElementById('accountNumber').value,
+                complaintDesc: document.getElementById('complaintDesc').value,
+                actionTaken: document.getElementById('actionTaken').value,
+                complaintType: document.getElementById('complaintType').value,
+                resolutionDate: document.getElementById('resolutionDate').value,
+                department: document.getElementById('department').value,
+                status: document.getElementById('status').value
+            };
 
-        const rows = table.querySelectorAll('tbody tr');
-        rows.forEach(row => {
-            const cells = Array.from(row.querySelectorAll('td'))
-                .map(cell => `"${cell.textContent.replace(/"/g, '""')}"`);
-            csv.push(cells.join(','));
+            complaints.push(complaint);
+            localStorage.setItem('complaints', JSON.stringify(complaints));
+            this.reset();
+            alert('Complaint submitted successfully!');
         });
 
-        const csvContent = csv.join('\n');
-        const blob = new Blob([csvContent], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Complaint_Report_${new Date().toISOString().split('T')[0]}.csv`;
-        a.click();
-        window.URL.revokeObjectURL(url);
-    }
+        function clearComplaintData() {
+            const password = document.getElementById('password').value;
+            if (password === "ABC123") {
+                localStorage.removeItem('complaints');
+                complaints = [];
+                alert('All complaint data has been cleared.');
+            } else {
+                alert('Incorrect password. Data not cleared.');
+            }
+        }
 
-    window.addEventListener('DOMContentLoaded', function() {
-        const today = new Date();
-        const startDate = new Date(today);
-        const endDate = new Date(today);
+        function generateReport() {
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+            const filterType = document.getElementById('filterType').value;
+            const filterStatus = document.getElementById('filterStatus').value;
 
-        startDate.setDate(today.getDate() - 30);
-        endDate.setDate(today.getDate() + 30);
+            let filteredComplaints = [...complaints];
 
-        const formatDate = (date) => date.toISOString().split('T')[0];
-        
-        document.getElementById('startDate').value = formatDate(startDate);
-        document.getElementById('endDate').value = formatDate(endDate);
-    });
+            if (startDate && !isNaN(startDate)) {
+                filteredComplaints = filteredComplaints.filter(c => 
+                    new Date(c.complaintDate) >= startDate);
+            }
+            if (endDate && !isNaN(endDate)) {
+                filteredComplaints = filteredComplaints.filter(c => 
+                    new Date(c.complaintDate) <= endDate);
+            }
+            if (filterType) {
+                filteredComplaints = filteredComplaints.filter(c => 
+                    c.complaintType === filterType);
+            }
+            if (filterStatus) {
+                filteredComplaints = filteredComplaints.filter(c => 
+                    c.status === filterStatus);
+            }
+
+            const reportBody = document.getElementById('reportBody');
+            reportBody.innerHTML = '';
+            
+            filteredComplaints.forEach((c, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+    <td>${index + 1}</td>
+    <td>C${c.id}</td>
+    <td>${c.complaintOrElse}</td> <!-- Added this -->
+    <td>${c.complaintReceived}</td>
+    <td>${c.complaintDate}</td>
+    <td>${c.customerName}</td>
+    <td>${c.mobileNumber}</td>
+    <td>${c.accountNumber}</td>
+    <td>${c.complaintDesc}</td>
+    <td>${c.complaintType}</td>
+    <td>${c.actionTaken}</td>
+    <td>${c.resolutionDate || 'N/A'}</td>
+    <td>${c.department}</td>
+    <td>${c.status}</td>
+`;
+                reportBody.appendChild(row);
+            });
+
+            document.getElementById('reportOutput').style.display = 'block';
+        }
+
+        function exportToCSV() {
+            const table = document.getElementById('reportTable');
+            let csv = [];
+            
+            const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+            csv.push(headers.join(','));
+
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const cells = Array.from(row.querySelectorAll('td'))
+                    .map(cell => `"${cell.textContent.replace(/"/g, '""')}"`);
+                csv.push(cells.join(','));
+            });
+
+            const csvContent = csv.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Complaint_Report_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function exportToJSON() {
+    const dataToExport = JSON.stringify(complaints, null, 2);
+    const blob = new Blob([dataToExport], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Complaints_Backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    
+    // Update last export timestamp
+    lastExportTimestamp = new Date().toLocaleString();
+    localStorage.setItem('lastExportTimestamp', lastExportTimestamp);
+    document.getElementById('lastExportTime').textContent = `Last Export: ${lastExportTimestamp}`;
+}
+
+        function importFromJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (Array.isArray(importedData) && importedData.every(item => 
+                        'id' in item && 'complaintDate' in item && 'customerName' in item)) {
+                        complaints = importedData;
+                        localStorage.setItem('complaints', JSON.stringify(complaints));
+                        alert('Data imported successfully!');
+                        if (document.getElementById('reportOutput').style.display === 'block') {
+                            generateReport();
+                        }
+                    } else {
+                        alert('Invalid file format. Please import a valid complaints JSON file.');
+                    }
+                } catch (error) {
+                    alert('Error importing file: ' + error.message);
+                }
+                document.getElementById('importFile').value = '';
+            };
+            reader.readAsText(file);
+        }
     </script>
 </body>
 </html>
